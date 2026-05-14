@@ -54,6 +54,55 @@ def custom_forget_password(request):
             token = default_token_generator.make_token(user)
 
             #url construction
+            reset_link = f"{request.scheme}://{request.get_host()}/auth/reset-confirm/{uid}/{token}"
+
+            #email configration
+            subject = "Reset your password"
+            email_template = 'accounts/emails/password_reset_email.html'
+            parameters = {
+                "users":user,
+                "reset_link" : reset_link,
+            }
+            msg_html = render_to_string(email_template,parameters)
+
+            send_mail(
+                subject,"Please reset your password by clicking on the link provided below",
+                settings.EMAIL_HOST_USER,
+                [user.email],
+                html_message = msg_html,
+            )
+            message.success(request, "Password reset link sent to your email")
+            return redirect("login")
+        else:
+            messages.error(request, "No user found with this email address.")
+    return render(request, 'accounts/forget_password.html')
+
+def custom_password_reset_confirm(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            if request.method == "POST":
+                new_password =  request.POST.get('new_password')
+                confirm_password = request.POST.get('confirm_password')
+
+                if new_password == confirm_password:
+                    user.set_password(new_password)
+                    user.save()
+                    messages.success(request, "Passwords reset successful")
+                    return redirect("login")
+                else:
+                    messages.error(request, 'Password do not match!')
+            return render(request, 'accounts/reset_password.html')
+        else:
+            return render(request, 'accounts/password_reset_invalid.html')
+
+
+        
+
 
 
 
