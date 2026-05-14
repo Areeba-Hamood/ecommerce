@@ -1,0 +1,248 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Crystal Elegance</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'store/css/authentication.css' %}">
+</head>
+
+<body>
+
+    <div class="auth-card signup-card">
+
+        <!-- Brand Top Section -->
+        <div class="card-top">
+            <div class="logo">💎</div>
+            <h3>Crystal Elegance</h3>
+            <p>Create your account</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="card-body">
+
+            <!-- Error Message -->
+            <div class="error-box" id="errorBox">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText"></span>
+            </div>
+
+            <!-- Signup Form -->
+            <form id="signupForm" onsubmit="handleSignup(event)">
+
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="fullName" placeholder="Enter your full name" required autocomplete="name">
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <i class="fas fa-phone input-icon"></i>
+                    <input type="tel" id="phone" placeholder="+92 300 1234567" required autocomplete="tel">
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" placeholder="Create a strong password" required
+                        autocomplete="new-password">
+                    <span class="toggle-pass" onclick="togglePassword('password', this)">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                    <!-- Password Strength Indicator -->
+                    <div class="strength-bar">
+                        <div class="strength-fill" id="strengthFill"></div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password *</label>
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required
+                        autocomplete="new-password">
+                    <span class="toggle-pass" onclick="togglePassword('confirmPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+
+                <!-- Terms & Conditions -->
+                <label class="terms-check">
+                    <input type="checkbox" id="terms" required>
+                    <span>I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy
+                            Policy</a></span>
+                </label>
+
+                <!-- Signup Button -->
+                <button type="submit" class="btn-auth">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+
+            </form>
+
+            <!-- Login Link -->
+            <p class="auth-link-text">
+                Already have an account?
+                <a href="login.html" class="auth-link">Sign In</a>
+            </p>
+
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Toggle Password Visibility
+        function togglePassword(fieldId, buttonElement) {
+            const passwordField = document.getElementById(fieldId);
+            const icon = buttonElement.querySelector('i');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // Password Strength Checker
+        document.getElementById('password').addEventListener('input', function () {
+            const password = this.value;
+            const strengthFill = document.getElementById('strengthFill');
+
+            let strength = 0;
+
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            const percentage = (strength / 5) * 100;
+            strengthFill.style.width = percentage + '%';
+
+            // Color based on strength
+            if (strength <= 1) {
+                strengthFill.style.background = '#ef4444'; // Red
+            } else if (strength <= 2) {
+                strengthFill.style.background = '#f59e0b'; // Yellow
+            } else if (strength <= 3) {
+                strengthFill.style.background = '#3b82f6'; // Blue
+            } else {
+                strengthFill.style.background = '#10b981'; // Green
+            }
+        });
+
+        // Confirm Password Match Check
+        document.getElementById('confirmPassword').addEventListener('input', function () {
+            const password = document.getElementById('password').value;
+
+            if (this.value === '') {
+                this.style.borderColor = '#fce7f3';
+            } else if (this.value === password) {
+                this.style.borderColor = '#10b981';
+            } else {
+                this.style.borderColor = '#ef4444';
+            }
+        });
+
+        // Show Error Message
+        function showError(message) {
+            const errorBox = document.getElementById('errorBox');
+            const errorText = document.getElementById('errorText');
+
+            errorText.textContent = message;
+            errorBox.classList.add('show');
+
+            setTimeout(() => {
+                errorBox.classList.remove('show');
+            }, 4000);
+        }
+
+        // Handle Signup
+        function handleSignup(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const termsChecked = document.getElementById('terms').checked;
+
+            // Full Name validation
+            if (!fullName) {
+                showError('Please enter your full name');
+                return;
+            }
+            if (fullName.length < 3) {
+                showError('Name must be at least 3 characters');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            // Phone validation (Pakistani format)
+            const phoneClean = phone.replace(/\s/g, '');
+            const phoneRegex = /^(\+92|0)?[0-9]{10}$/;
+            if (!phoneRegex.test(phoneClean)) {
+                showError('Enter a valid Pakistani phone number (+923001234567)');
+                return;
+            }
+
+            // Password validation
+            if (password.length < 8) {
+                showError('Password must be at least 8 characters');
+                return;
+            }
+
+            const strongPassRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/;
+            if (!strongPassRegex.test(password)) {
+                showError('Password needs uppercase, lowercase, number, and special character');
+                return;
+            }
+
+            // Confirm password
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+
+            // Terms checkbox
+            if (!termsChecked) {
+                showError('Please agree to the Terms & Conditions');
+                return;
+            }
+
+            // Success
+            alert('✅ Account created successfully!\n\nWelcome, ' + fullName + '!');
+            // document.getElementById('signupForm').submit();
+        }
+    </script>
+
+</body>
+
+</html>
