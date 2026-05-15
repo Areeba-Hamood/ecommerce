@@ -1,11 +1,11 @@
 from django.shortcuts import render , redirect
-from django.contrib.auth import login , logout
-from django.contrib.auth import messages
+from django.contrib.auth import login , logout , authenticate
+from django.contrib import messages
 from .model import CustomUser
-from django utlis.http import urlsafe_base64_encode , urlsafe_base64_decode
-from django utlis.encoding import force_bytes , force_str
+from django.utlis.http import urlsafe_base64_encode , urlsafe_base64_decode
+from django.utlis.encoding import force_bytes , force_str
 from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send mail
+from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm , SetPasswordForm
@@ -35,7 +35,7 @@ def login_view(request):
             login(request, user)
             return redirect("home")
         else:
-            message.error(request,"Invalid username or password!")
+            messages.error(request,"Invalid username or password!")
     return render(request, 'accounts/login.html')
 
 
@@ -50,8 +50,8 @@ def custom_forget_password(request):
 
         if users.exists():
             for user in users:
-            uid = urlsafe_base64_encode(force_bytes{user.pk})
-            token = default_token_generator.make_token(user)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                token = default_token_generator.make_token(user)
 
             #url construction
             reset_link = f"{request.scheme}://{request.get_host()}/auth/reset-confirm/{uid}/{token}"
@@ -71,7 +71,7 @@ def custom_forget_password(request):
                 [user.email],
                 html_message = msg_html,
             )
-            message.success(request, "Password reset link sent to your email")
+            messages.success(request, "Password reset link sent to your email")
             return redirect("login")
         else:
             messages.error(request, "No user found with this email address.")
@@ -84,21 +84,21 @@ def custom_password_reset_confirm(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
         user = None
 
-        if user is not None and default_token_generator.check_token(user, token):
-            if request.method == "POST":
-                new_password =  request.POST.get('new_password')
-                confirm_password = request.POST.get('confirm_password')
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == "POST":
+            new_password =  request.POST.get('new_password')
+            confirm_password = request.POST.get('confirm_password')
 
-                if new_password == confirm_password:
-                    user.set_password(new_password)
-                    user.save()
-                    messages.success(request, "Passwords reset successful")
-                    return redirect("login")
-                else:
-                    messages.error(request, 'Password do not match!')
-            return render(request, 'accounts/reset_password.html')
-        else:
-            return render(request, 'accounts/password_reset_invalid.html')
+            if new_password == confirm_password:
+                user.set_password(new_password)
+                user.save()
+                messages.success(request, "Passwords reset successful")
+                return redirect("login")
+            else:
+                messages.error(request, 'Password do not match!')
+        return render(request, 'accounts/reset_password.html')
+    else:
+        return render(request, 'accounts/password_reset_invalid.html')
 
 
         
