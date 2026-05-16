@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invalid Link - Crystal Elegance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'store/css/auth.css' %}">
+</head>
+<body>
+    <div class="auth-card">
+        <div class="card-top">
+            <span class="logo">💎</span>
+            <h3>Invalid Link</h3>
+            <p>This reset link is invalid or expired</p>
+        </div>
+        <div class="card-body" style="text-align: center;">
+            <div class="msg-box error show">
+                <i class="fas fa-times-circle"></i> 
+                The password reset link is invalid, expired, or has already been used.
+            </div>
+            <p style="font-size: 13px; color: #666; margin: 20px 0;">
+                Please request a new password reset link.
+            </p>
+            <a href="{% url 'forgot_password' %}" class="btn" style="display: block; text-decoration: none; text-align: center;">
+                Request New Link
+            </a>
+            <p class="bottom-link" style="margin-top: 15px;">
+                <a href="{% url 'login' %}">← Back to Login</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

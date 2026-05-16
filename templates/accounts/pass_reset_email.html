@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Sent - Crystal Elegance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'store/css/auth.css' %}">
+</head>
+<body>
+    <div class="auth-card">
+        <div class="card-top">
+            <span class="logo">💎</span>
+            <h3>Email Sent</h3>
+            <p>Check your inbox</p>
+        </div>
+        <div class="card-body" style="text-align: center;">
+            <div class="msg-box success show">
+                <i class="fas fa-check-circle"></i> 
+                Password reset link has been sent to your email address.
+            </div>
+            <p style="font-size: 13px; color: #666; margin: 20px 0;">
+                Please check your email and click the link to reset your password.
+                <br><br>
+                Didn't receive the email? Check spam folder or
+            </p>
+            <a href="{% url 'forgot_password' %}" class="btn" style="display: block; text-decoration: none; text-align: center;">
+                Try Again
+            </a>
+            <p class="bottom-link" style="margin-top: 15px;">
+                <a href="{% url 'login' %}">← Back to Login</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
