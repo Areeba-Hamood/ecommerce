@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 400px;
+}
+
+.card-top {
+    background: #1a1a1a;
+    color: #d4af37;
+    text-align: center;
+    padding: 25px 20px;
+}
+
+.card-top .logo { font-size: 32px; display: block; margin-bottom: 5px; }
+.card-top h3 { font-size: 18px; font-weight: 600; }
+.card-top p { font-size: 12px; opacity: 0.7; margin-top: 3px; }
+
+.card-body { padding: 25px 20px; }
+
+.form-group { position: relative; margin-bottom: 16px; }
+.form-group label { font-size: 12px; font-weight: 500; color: #333; display: block; margin-bottom: 4px; }
+.form-group i { position: absolute; left: 11px; top: 32px; color: #d4af37; font-size: 13px; }
+.form-group input {
+    width: 100%; padding: 10px 12px 10px 34px;
+    border: 1px solid #ddd; border-radius: 6px;
+    font-size: 13px; outline: none; background: #fafafa;
+}
+.form-group input:focus { border-color: #d4af37; background: #fff; }
+
+.btn {
+    width: 100%; padding: 11px; background: #1a1a1a; color: #d4af37;
+    border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer;
+}
+.btn:hover { background: #d4af37; color: #1a1a1a; }
+
+.bottom-link { text-align: center; margin-top: 15px; font-size: 12px; }
+.bottom-link a { color: #d4af37; text-decoration: none; font-weight: 500; }
+
+.msg-box { padding: 10px 12px; border-radius: 6px; font-size: 11px; margin-bottom: 15px; display: none; text-align: center; }
+.msg-box.show { display: block; }
+.msg-box.error { background: #fef2f2; color: #dc2626; }
+.msg-box.success { background: #f0fdf4; color: #16a34a; }
+.msg-box.info { background: #f0f4ff; color: #2563eb; }
+
+@media (max-width: 480px) {
+    .card-top { padding: 20px 15px; }
+    .card-body { padding: 20px 15px; }
+}

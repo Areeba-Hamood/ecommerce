@@ -1,0 +1,390 @@
+/* ============================================
+   Crystal Elegance - White & Gold Theme
+   ============================================ */
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f9f9f9;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Card Container */
+.auth-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #eeeeee;
+}
+
+.login-card {
+    max-width: 420px;
+}
+
+.signup-card {
+    max-width: 440px;
+}
+
+/* Card Top (Brand Section) */
+.card-top {
+    background: #ffffff;
+    color: #1a1a1a;
+    text-align: center;
+    padding: 35px 25px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.signup-card .card-top {
+    padding: 30px 25px;
+}
+
+.card-top .logo {
+    font-size: 42px;
+    margin-bottom: 8px;
+}
+
+.signup-card .card-top .logo {
+    font-size: 38px;
+    margin-bottom: 5px;
+}
+
+.card-top h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 3px;
+    color: #1a1a1a;
+}
+
+.card-top h3 span {
+    color: #d4af37;
+}
+
+.signup-card .card-top h3 {
+    font-size: 22px;
+}
+
+.card-top p {
+    font-size: 13px;
+    opacity: 0.6;
+    margin: 5px 0 0;
+    color: #666666;
+}
+
+.signup-card .card-top p {
+    font-size: 12px;
+    margin: 3px 0 0;
+}
+
+/* Card Body (Form Section) */
+.card-body {
+    padding: 30px 25px;
+}
+
+.signup-card .card-body {
+    padding: 25px;
+}
+
+/* Form Groups */
+.form-group {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.signup-card .form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #333333;
+    margin-bottom: 5px;
+    display: block;
+    letter-spacing: 0.5px;
+}
+
+.signup-card .form-group label {
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+/* Input Icons */
+.form-group .input-icon {
+    position: absolute;
+    left: 12px;
+    top: 37px;
+    color: #d4af37;
+    font-size: 14px;
+    z-index: 10;
+}
+
+.signup-card .form-group .input-icon {
+    left: 11px;
+    top: 33px;
+    font-size: 13px;
+}
+
+/* Input Fields */
+.form-group input {
+    width: 100%;
+    padding: 11px 14px 11px 36px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    color: #333333;
+}
+
+.form-group input::placeholder {
+    color: #aaaaaa;
+}
+
+.signup-card .form-group input {
+    padding: 10px 12px 10px 34px;
+    font-size: 13px;
+}
+
+.form-group input:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.08);
+    background: #ffffff;
+}
+
+/* Toggle Password Icon */
+.toggle-pass {
+    position: absolute;
+    right: 12px;
+    top: 37px;
+    color: #d4af37;
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 10;
+    transition: color 0.3s ease;
+}
+
+.signup-card .toggle-pass {
+    right: 10px;
+    top: 33px;
+    font-size: 13px;
+}
+
+.toggle-pass:hover {
+    color: #b8960c;
+}
+
+/* Remember Me & Options Row */
+.options-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.remember-label {
+    color: #777777;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.remember-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #d4af37;
+    cursor: pointer;
+}
+
+.forgot-link {
+    color: #d4af37;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.forgot-link:hover {
+    color: #b8960c;
+    text-decoration: underline;
+}
+
+/* Password Strength Bar */
+.strength-bar {
+    height: 3px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+/* Terms Checkbox */
+.terms-check {
+    font-size: 11px;
+    color: #777777;
+    margin: 15px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.terms-check input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: #d4af37;
+    cursor: pointer;
+}
+
+.terms-check a {
+    color: #d4af37;
+    text-decoration: none;
+}
+
+.terms-check a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+.btn-auth {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+    color: #d4af37;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+
+.btn-auth:hover {
+    background: linear-gradient(135deg, #d4af37 0%, #c9a030 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 25px rgba(212, 175, 55, 0.3);
+    color: #1a1a1a;
+}
+
+.btn-auth:active {
+    transform: translateY(0);
+}
+
+/* Error Message Box */
+.error-box {
+    background: #fff5f5;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-bottom: 18px;
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
+.signup-card .error-box {
+    font-size: 12px;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.error-box.show {
+    display: flex;
+}
+
+.error-box i {
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+/* Bottom Link */
+.auth-link-text {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 13px;
+    color: #777777;
+}
+
+.signup-card .auth-link-text {
+    margin-top: 16px;
+}
+
+.auth-link {
+    color: #d4af37;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #b8960c;
+    text-decoration: underline;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .card-top {
+        padding: 28px 20px;
+    }
+
+    .signup-card .card-top {
+        padding: 25px 18px;
+    }
+
+    .card-body {
+        padding: 25px 20px;
+    }
+
+    .signup-card .card-body {
+        padding: 22px 18px;
+    }
+
+    .card-top h3 {
+        font-size: 20px;
+    }
+    .card-top .logo img {
+    width: 10px;    /* apni marzi ka size */
+    height: 10px;
+}
+
+    
+
+    .signup-card .card-top .logo {
+        font-size: 32px;
+    }
+}

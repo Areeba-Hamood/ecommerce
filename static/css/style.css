@@ -1,0 +1,123 @@
+.carousel-item {
+    height: 400px;
+}
+
+.slider-img {
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .carousel-item {
+        height: 200px;
+    }
+}
+
+.hover-img {
+    transition: all 0.3s ease;
+}
+
+.hover-img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.custom-navbar {
+    background-color:rgb(230, 218, 218);
+    /* pure black */
+    padding: 12px 20px;
+}
+
+/* Brand (Crystal Elegance) */
+.navbar-brand {
+    color: #3b3b3b !important;
+    font-family : 'Great Vibes';
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: 1px;
+}
+
+/* Nav links */
+.navbar-nav .nav-link {
+    color: #3b3b3b !important;
+    margin: 0 10px;
+    position: relative;
+    transition: 0.3s;
+}
+
+/* Hover effect (underline animation 🔥) */
+.navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background: #30020e;
+    /* pinkish stylish color */
+    left: 0;
+    bottom: 0;
+    transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 100%;
+}
+
+/* Hover color change */
+.navbar-nav .nav-link:hover {
+    color: #484848 !important;
+}
+
+/* Search box styling */
+form input {
+    border-radius: 20px;
+}
+
+form button {
+    border-radius: 20px;
+    color: white;
+    border-color: white;
+}
+
+form button:hover {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: white;
+}
+
+/* Yellow button */
+.custom-search-btn {
+    background-color: #f8f8f8;
+    /* Bootstrap yellow */
+    color: black;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 15px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+/* Hover effect 🔥 */
+.custom-search-btn:hover {
+    background-color: #979691;
+    color: black;
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(78, 78, 78, 0.5);
+}
+
+.navbar-brand {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/*Hover effect cards*/
+
+.card img {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    transition: 0.3s;
+}
+
