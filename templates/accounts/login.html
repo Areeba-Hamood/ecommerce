@@ -1,155 +1,71 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}  
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Crystal Elegance</title>
+{% block title %}Login | Crystal Elegance{% endblock %}
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% block content %}
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'store/css/authentication.css' %}">
+<div class="card">
+
+  <a href="/" class="brand">
+    <div class="brand-icon"><i class="bi bi-gem"></i></div>
+    <span class="brand-name">Crystal <span>Elegance</span></span>
+    <span class="brand-tag">Fine Jewellery</span>
+  </a>
+
+  <h1>Welcome Back</h1>
+  <p class="subtitle">Sign in to continue your journey with us</p>
+
+  
+  {% if messages %}
+    {% for message in messages %}
+      <div class="msg {% if message.tags == 'error' %}msg-error{% else %}msg-success{% endif %}">
+        <i class="bi {% if message.tags == 'error' %}bi-exclamation-circle-fill{% else %}bi-check-circle-fill{% endif %}"></i>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
 
 
-</head>
+  <form method="POST" action="{% url 'accounts:login' %}">
+    {% csrf_token %}
 
-<body>
-
-    <div class="auth-card login-card">
-
-        <!-- Brand Top Section -->
-        <div class="logo">
-            <img src="{% static 'store/images/logo.png' %}" alt="Crystal Elegance">
-        </div>
-        <h3>Crystal Elegance</h3>
-        <p>Sign in to your account</p>
+    <label for="username">Username</label>
+    <div class="field">
+      <i class="bi bi-person icon"></i>
+      <input type="text" name="username" id="username"
+             placeholder="Your username" autofocus/>
     </div>
 
-    <!-- Form Section -->
-    <div class="card-body">
-
-        <!-- Error Message -->
-        <div class="error-box" id="errorBox">
-            <i class="fas fa-exclamation-circle"></i>
-            <span id="errorText"></span>
-        </div>
-
-        <!-- Login Form -->
-        <form id="loginForm" method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
-
-            <!-- Email Field -->
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <i class="fas fa-envelope input-icon"></i>
-                <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
-            </div>
-
-            <!-- Password Field -->
-            <div class="form-group">
-                <label for="password">Password</label>
-                <i class="fas fa-lock input-icon"></i>
-                <input type="password" id="password" placeholder="Enter your password" required
-                    autocomplete="current-password">
-                <span class="toggle-pass" onclick="togglePassword()">
-                    <i class="fas fa-eye" id="toggleIcon"></i>
-                </span>
-            </div>
-
-            <!-- Remember Me & Forgot Password -->
-            <div class="options-row">
-                <label class="remember-label">
-                    <input type="checkbox" name="remember" id="remember">
-                    Remember me
-                </label>
-                <a href="#" class="forgot-link">Forgot Password?</a>
-            </div>
-
-            <!-- Login Button -->
-            <button type="submit" class="btn-auth">
-                <i class="fas fa-sign-in-alt"></i> Sign In
-            </button>
-
-        </form>
-
-        <!-- Signup Link -->
-        <p class="auth-link-text">
-            Don't have an account?
-            <a href="{% url 'signup' %}" class="auth-link">Create Account</a>
-        </p>
-
-    </div>
+    <label for="password">Password</label>
+    <div class="field">
+      <i class="bi bi-lock icon"></i>
+      <input type="password" name="password" id="password"
+             placeholder="Your password" style="padding-right:2.7rem"/>
+      <button type="button" class="toggle-pw" onclick="togglePw('password','eye1')">
+        <i class="bi bi-eye" id="eye1"></i>
+      </button>
     </div>
 
-    <!-- JavaScript -->
-    <script>
-        // Toggle Password Visibility
-        function togglePassword() {
-            const passwordField = document.getElementById('password');
-            const toggleIcon = document.getElementById('toggleIcon');
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="check-row">
+        <input type="checkbox" id="remember" name="remember"/>
+        <label for="remember">Remember me</label>
+      </div>
+      <a href="{% url 'accounts:forget-password' %}" class="link" style="font-size:.8rem;">
+        Forgot password?
+      </a>
+    </div>
 
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        }
+    <button type="submit" class="btn-main">
+      <i class="bi bi-box-arrow-in-right"></i> Sign In
+    </button>
+  </form>
 
-        // Show Error Message
-        function showError(message) {
-            const errorBox = document.getElementById('errorBox');
-            const errorText = document.getElementById('errorText');
+  <div class="divider">new here?</div>
+  <div class="footer-text">
+    <a href="{% url 'accounts:register' %}" class="link">Create an account &rarr;</a>
+  </div>
 
-            errorText.textContent = message;
-            errorBox.classList.add('show');
+</div>
+{% endblock %}
 
-            // Auto hide after 4 seconds
-            setTimeout(() => {
-                errorBox.classList.remove('show');
-            }, 4000);
-        }
-
-        // Handle Login
-        function handleLogin(event) {
-            event.preventDefault();
-
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
-
-            // Email validation
-            if (!email) {
-                showError('Please enter your email address');
-                return;
-            }
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showError('Please enter a valid email address');
-                return;
-            }
-
-            // Password validation
-            if (!password) {
-                showError('Please enter your password');
-                return;
-            }
-
-            if (password.length < 8) {
-                showError('Password must be at least 8 characters');
-                return;
-            }
-
-            // Success (for testing - replace with actual backend call)
-            alert('✅ Login successful!\n\nWelcome back!');
-            // document.getElementById('loginForm').submit();
-        }
-    </script>
-
-</body>
-
-</html>

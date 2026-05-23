@@ -1,15 +1,15 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth import login , logout , authenticate
 from django.contrib import messages
-from .model import CustomUser
-from django.utlis.http import urlsafe_base64_encode , urlsafe_base64_decode
-from django.utlis.encoding import force_bytes , force_str
+from .models import CustomUser
+from django.utils.http import urlsafe_base64_encode , urlsafe_base64_decode
+from django.utils.encoding import force_bytes , force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm , SetPasswordForm
-from .form import CustomUserRegistrationForm
+from .forms import CustomUserRegistrationForm
 
 
 # Create your views here.
@@ -19,7 +19,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             messages.success(request, "Registration successful!")
-            return redirect("login")
+            return redirect("accounts:login")
     else:
         form = CustomUserRegistrationForm()
     return render(request, 'accounts/register.html', {'form':form})
@@ -52,27 +52,23 @@ def custom_forget_password(request):
             for user in users:
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = default_token_generator.make_token(user)
-
-            #url construction
-            reset_link = f"{request.scheme}://{request.get_host()}/auth/reset-confirm/{uid}/{token}"
-
-            #email configration
-            subject = "Reset your password"
-            email_template = 'accounts/emails/password_reset_email.html'
-            parameters = {
-                "users":user,
-                "reset_link" : reset_link,
-            }
-            msg_html = render_to_string(email_template,parameters)
-
-            send_mail(
-                subject,"Please reset your password by clicking on the link provided below",
-                settings.EMAIL_HOST_USER,
-                [user.email],
-                html_message = msg_html,
-            )
+                reset_link = f"{request.scheme}://{request.get_host()}/auth/reset-confirm/{uid}/{token}"
+                subject = "Reset your password"
+                email_template = 'accounts/email/password_reset_email.html'
+                parameters = {
+                    "users":user,
+                    "reset_link" : reset_link,
+                }
+                msg_html = render_to_string(email_template,parameters)
+                
+                send_mail(
+                    subject,"Please reset your password by clicking on the link provided below",
+                    settings.EMAIL_HOST_USER,
+                    [user.email],
+                    html_message = msg_html,
+                )
             messages.success(request, "Password reset link sent to your email")
-            return redirect("login")
+            return redirect("accounts:login")
         else:
             messages.error(request, "No user found with this email address.")
     return render(request, 'accounts/forget_password.html')

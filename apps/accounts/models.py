@@ -3,8 +3,10 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
+
     is_admin = models.BooleanField(default=False)
-    phone = models.TextField
+    
 
     def __str__(self):
         return self.username

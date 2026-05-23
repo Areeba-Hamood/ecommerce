@@ -18,6 +18,7 @@ import sys
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -28,7 +29,7 @@ SECRET_KEY = 'django-insecure-7n6+eqcsx*ldxes075$g(r*!+zbm!g87-lj+0#@a0u^me7!2f9
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 AUTH_USER_MODEL= 'accounts.CustomUser'
 # Application definition
 sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
@@ -123,4 +124,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']

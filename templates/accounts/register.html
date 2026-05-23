@@ -1,248 +1,154 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Crystal Elegance</title>
+{% block title %}Register | Crystal Elegance{% endblock %}
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% block content %}
+<div class="card card-wide">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'store/css/authentication.css' %}">
-</head>
+  <a href="/" class="brand">
+    <div class="brand-icon"><i class="bi bi-gem"></i></div>
+    <span class="brand-name">Crystal <span>Elegance</span></span>
+    <span class="brand-tag">Fine Jewellery</span>
+  </a>
 
-<body>
+  <h1>Create Your Account</h1>
+  <p class="subtitle">Join us and discover timeless jewellery crafted for you</p>
 
-    <div class="auth-card signup-card">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="d-alrt {{ message.tags }}">
+                    <i
+                        class="bi bi-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i>
+                    <span>{{ message }}</span>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% if form.non_field_errors %}
+                <div class="d-alrt error">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <span>{{ form.non_field_errors.0 }}</span>
+                </div>
+                {% endif %}
 
-        <!-- Brand Top Section -->
-        <div class="card-top">
-            <div class="logo">💎</div>
-            <h3>Crystal Elegance</h3>
-            <p>Create your account</p>
+  <form method="POST"  novalidate>
+    {% csrf_token %}
+
+    <!-- First & Last Name side by side -->
+    <div class="row g-3">
+      <div class="col-6">
+        <label for="id_first_name">First Name</label>
+        <div class="field">
+          <i class="bi bi-person icon"></i>
+          <input type="text" name="first_name" id="id_first_name"
+                 class="{% if form.first_name.errors %}invalid{% endif %}"
+                 value="{{ form.first_name.value|default:'' }}"
+                 placeholder="Sara"/>
         </div>
-
-        <!-- Form Section -->
-        <div class="card-body">
-
-            <!-- Error Message -->
-            <div class="error-box" id="errorBox">
-                <i class="fas fa-exclamation-circle"></i>
-                <span id="errorText"></span>
-            </div>
-
-            <!-- Signup Form -->
-            <form id="signupForm" onsubmit="handleSignup(event)">
-
-                <!-- Full Name -->
-                <div class="form-group">
-                    <label for="fullName">Full Name *</label>
-                    <i class="fas fa-user input-icon"></i>
-                    <input type="text" id="fullName" placeholder="Enter your full name" required autocomplete="name">
-                </div>
-
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="email">Email Address *</label>
-                    <i class="fas fa-envelope input-icon"></i>
-                    <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
-                </div>
-
-                <!-- Phone Number -->
-                <div class="form-group">
-                    <label for="phone">Phone Number *</label>
-                    <i class="fas fa-phone input-icon"></i>
-                    <input type="tel" id="phone" placeholder="+92 300 1234567" required autocomplete="tel">
-                </div>
-
-                <!-- Password -->
-                <div class="form-group">
-                    <label for="password">Password *</label>
-                    <i class="fas fa-lock input-icon"></i>
-                    <input type="password" id="password" placeholder="Create a strong password" required
-                        autocomplete="new-password">
-                    <span class="toggle-pass" onclick="togglePassword('password', this)">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                    <!-- Password Strength Indicator -->
-                    <div class="strength-bar">
-                        <div class="strength-fill" id="strengthFill"></div>
-                    </div>
-                </div>
-
-                <!-- Confirm Password -->
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password *</label>
-                    <i class="fas fa-lock input-icon"></i>
-                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required
-                        autocomplete="new-password">
-                    <span class="toggle-pass" onclick="togglePassword('confirmPassword', this)">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-
-                <!-- Terms & Conditions -->
-                <label class="terms-check">
-                    <input type="checkbox" id="terms" required>
-                    <span>I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy
-                            Policy</a></span>
-                </label>
-
-                <!-- Signup Button -->
-                <button type="submit" class="btn-auth">
-                    <i class="fas fa-user-plus"></i> Create Account
-                </button>
-
-            </form>
-
-            <!-- Login Link -->
-            <p class="auth-link-text">
-                Already have an account?
-                <a href="login.html" class="auth-link">Sign In</a>
-            </p>
-
+        {% for e in form.first_name.errors %}
+          <div class="error-msg">{{ e }}</div>
+        {% endfor %}
+      </div>
+      <div class="col-6">
+        <label for="id_last_name">Last Name</label>
+        <div class="field">
+          <i class="bi bi-person icon"></i>
+          <input type="text" name="last_name" id="id_last_name"
+                 class="{% if form.last_name.errors %}invalid{% endif %}"
+                 value="{{ form.last_name.value|default:'' }}"
+                 placeholder="Khan"/>
         </div>
+        {% for e in form.last_name.errors %}
+          <div class="error-msg">{{ e }}</div>
+        {% endfor %}
+      </div>
     </div>
 
-    <!-- JavaScript -->
-    <script>
-        // Toggle Password Visibility
-        function togglePassword(fieldId, buttonElement) {
-            const passwordField = document.getElementById(fieldId);
-            const icon = buttonElement.querySelector('i');
+    <!-- Username -->
+    <label for="id_username">Username</label>
+    <div class="field">
+      <i class="bi bi-at icon"></i>
+      <input type="text" name="username" id="id_username"
+             class="{% if form.username.errors %}invalid{% endif %}"
+             value="{{ form.username.value|default:'' }}"
+             placeholder="sara_khan"/>
+    </div>
+    {% for e in form.username.errors %}
+      <div class="error-msg">{{ e }}</div>
+    {% endfor %}
 
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        }
+    <!-- Email -->
+    <label for="id_email">Email Address</label>
+    <div class="field">
+      <i class="bi bi-envelope icon"></i>
+      <input type="email" name="email" id="id_email"
+             class="{% if form.email.errors %}invalid{% endif %}"
+             value="{{ form.email.value|default:'' }}"
+             placeholder="you@example.com"/>
+    </div>
+    {% for e in form.email.errors %}
+      <div class="error-msg">{{ e }}</div>
+    {% endfor %}
 
-        // Password Strength Checker
-        document.getElementById('password').addEventListener('input', function () {
-            const password = this.value;
-            const strengthFill = document.getElementById('strengthFill');
+    <!-- Password -->
+    <label for="id_password1">Password</label>
+    <div class="field">
+      <i class="bi bi-lock icon"></i>
+      <input type="password" name="password1" id="id_password1"
+             class="{% if form.password1.errors %}invalid{% endif %}"
+             placeholder="Minimum 8 characters"
+             style="padding-right:2.7rem"
+             oninput="checkStrength(this.value)"/>
+      <button type="button" class="toggle-pw" onclick="togglePw('id_password1','eye1')">
+        <i class="bi bi-eye" id="eye1"></i>
+      </button>
+    </div>
+    <div class="strength-bar">
+      <div class="seg" id="s0"></div>
+      <div class="seg" id="s1"></div>
+      <div class="seg" id="s2"></div>
+      <div class="seg" id="s3"></div>
+    </div>
+    <div class="strength-label" id="slabel"></div>
+    {% for e in form.password1.errors %}
+      <div class="error-msg">{{ e }}</div>
+    {% endfor %}
 
-            let strength = 0;
+    <!-- Confirm Password -->
+    <label for="id_password2" style="margin-top:.8rem;">Confirm Password</label>
+    <div class="field">
+      <i class="bi bi-lock-fill icon"></i>
+      <input type="password" name="password2" id="id_password2"
+             class="{% if form.password2.errors %}invalid{% endif %}"
+             placeholder="Repeat your password"
+             style="padding-right:2.7rem"
+             oninput="checkMatch()"/>
+      <button type="button" class="toggle-pw" onclick="togglePw('id_password2','eye2')">
+        <i class="bi bi-eye" id="eye2"></i>
+      </button>
+    </div>
+    <div class="match-msg" id="matchMsg"></div>
+    {% for e in form.password2.errors %}
+      <div class="error-msg">{{ e }}</div>
+    {% endfor %}
 
-            if (password.length >= 8) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[a-z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^A-Za-z0-9]/.test(password)) strength++;
+    <!-- Terms -->
+    <div class="terms">
+      <input type="checkbox" id="terms" required/>
+      <label for="terms">
+        I agree to the <a href="#" class="link">Terms of Service</a> and
+        <a href="#" class="link">Privacy Policy</a> of Crystal Elegance
+      </label>
+    </div>
 
-            const percentage = (strength / 5) * 100;
-            strengthFill.style.width = percentage + '%';
+    <button type="submit" class="btn-main">
+      <i class="bi bi-gem"></i> Create Account
+    </button>
+  </form>
 
-            // Color based on strength
-            if (strength <= 1) {
-                strengthFill.style.background = '#ef4444'; // Red
-            } else if (strength <= 2) {
-                strengthFill.style.background = '#f59e0b'; // Yellow
-            } else if (strength <= 3) {
-                strengthFill.style.background = '#3b82f6'; // Blue
-            } else {
-                strengthFill.style.background = '#10b981'; // Green
-            }
-        });
+  <div class="divider">already a member?</div>
+  <div class="footer-text">
+    <a href="{% url 'accounts:login' %}" class="link">Sign in instead &rarr;</a>
+  </div>
 
-        // Confirm Password Match Check
-        document.getElementById('confirmPassword').addEventListener('input', function () {
-            const password = document.getElementById('password').value;
-
-            if (this.value === '') {
-                this.style.borderColor = '#fce7f3';
-            } else if (this.value === password) {
-                this.style.borderColor = '#10b981';
-            } else {
-                this.style.borderColor = '#ef4444';
-            }
-        });
-
-        // Show Error Message
-        function showError(message) {
-            const errorBox = document.getElementById('errorBox');
-            const errorText = document.getElementById('errorText');
-
-            errorText.textContent = message;
-            errorBox.classList.add('show');
-
-            setTimeout(() => {
-                errorBox.classList.remove('show');
-            }, 4000);
-        }
-
-        // Handle Signup
-        function handleSignup(event) {
-            event.preventDefault();
-
-            const fullName = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const termsChecked = document.getElementById('terms').checked;
-
-            // Full Name validation
-            if (!fullName) {
-                showError('Please enter your full name');
-                return;
-            }
-            if (fullName.length < 3) {
-                showError('Name must be at least 3 characters');
-                return;
-            }
-
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showError('Please enter a valid email address');
-                return;
-            }
-
-            // Phone validation (Pakistani format)
-            const phoneClean = phone.replace(/\s/g, '');
-            const phoneRegex = /^(\+92|0)?[0-9]{10}$/;
-            if (!phoneRegex.test(phoneClean)) {
-                showError('Enter a valid Pakistani phone number (+923001234567)');
-                return;
-            }
-
-            // Password validation
-            if (password.length < 8) {
-                showError('Password must be at least 8 characters');
-                return;
-            }
-
-            const strongPassRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/;
-            if (!strongPassRegex.test(password)) {
-                showError('Password needs uppercase, lowercase, number, and special character');
-                return;
-            }
-
-            // Confirm password
-            if (password !== confirmPassword) {
-                showError('Passwords do not match');
-                return;
-            }
-
-            // Terms checkbox
-            if (!termsChecked) {
-                showError('Please agree to the Terms & Conditions');
-                return;
-            }
-
-            // Success
-            alert('✅ Account created successfully!\n\nWelcome, ' + fullName + '!');
-            // document.getElementById('signupForm').submit();
-        }
-    </script>
-
-</body>
-
-</html>
+</div>
+{% endblock %}
