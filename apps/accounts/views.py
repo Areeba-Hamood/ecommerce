@@ -1,7 +1,7 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth import login , logout , authenticate
 from django.contrib import messages
-from .models import CustomUser
+from .models import User
 from django.utils.http import urlsafe_base64_encode , urlsafe_base64_decode
 from django.utils.encoding import force_bytes , force_str
 from django.contrib.auth.tokens import default_token_generator
@@ -9,19 +9,19 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm , SetPasswordForm
-from .forms import CustomUserRegistrationForm
+from .forms import UserRegistrationForm
 
 
 # Create your views here.
 def register_view(request):
     if request.method == "POST":
-        form = CustomUserRegistrationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
             messages.success(request, "Registration successful!")
             return redirect("accounts:login")
     else:
-        form = CustomUserRegistrationForm()
+        form = UserRegistrationForm()
     return render(request, 'accounts/register.html', {'form':form})
 
 
@@ -46,7 +46,7 @@ def logout_view(request):
 def custom_forget_password(request):
     if request.method == "POST":
         email = request.POST.get('email')
-        users = CustomUser.objects.filter(email=email)
+        users = User.objects.filter(email=email)
 
         if users.exists():
             for user in users:
@@ -76,8 +76,8 @@ def custom_forget_password(request):
 def custom_password_reset_confirm(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        user = CustomUser.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
