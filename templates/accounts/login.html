@@ -4,6 +4,7 @@
 
 {% block content %}
 
+
 <div class="card">
 
   <a href="/" class="brand">
@@ -15,7 +16,7 @@
   <h1>Welcome Back</h1>
   <p class="subtitle">Sign in to continue your journey with us</p>
 
-  
+
   {% if messages %}
     {% for message in messages %}
       <div class="msg {% if message.tags == 'error' %}msg-error{% else %}msg-success{% endif %}">
@@ -24,7 +25,6 @@
       </div>
     {% endfor %}
   {% endif %}
-
 
   <form method="POST" action="{% url 'accounts:login' %}">
     {% csrf_token %}
