@@ -30,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-AUTH_USER_MODEL= 'accounts.CustomUser'
+AUTH_USER_MODEL= 'accounts.User'
 # Application definition
 sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 
@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'store',
+    'products',
+    'cart',
+    'orders',
 ]
 
 MIDDLEWARE = [
