@@ -10,6 +10,10 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm , SetPasswordForm
 from .forms import UserRegistrationForm
+from.forms import RegisterationForm, LoginForm, ProfileForm, AddressForm
+from django.contrib.auth.decorators import login_required
+from .models import Address
+from orders.models import Order
 
 
 # Create your views here.
@@ -95,6 +99,33 @@ def custom_password_reset_confirm(request, uidb64, token):
         return render(request, 'accounts/reset_password.html')
     else:
         return render(request, 'accounts/password_reset_invalid.html')
+
+@login_required
+def profile_view(request):
+    form = ProfileForm(request.POST or None, request.FILES or None, instance=request.user)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Profile updated.")
+        return redirect("profile")
+    orders = Order.objects.filter(user=request.user).order_by("-created_at")[:10]
+    return render(request,"accounts/profile.html",
+                  {"form": form, "orders": orders})
+
+@login_required
+def address_list(request):
+    addresses = Address.objects.filter(user=request.user)
+    return render(request,"accounts/addresses.html",{"addresses":addresses})  
+
+@login_required
+def address_create(request):
+    form = AddressForm(request.POST or None)
+    if form.is_valid():
+        addr = form.save(commit=False)
+        addr.user = request.user
+        addr.save()
+        messages.success(request, "Address saved.")
+        return redirect("address_list")
+    return render(request, "accounts/address_form.html",{"form":form})     
 
 
         
