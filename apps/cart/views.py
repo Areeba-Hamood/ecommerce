@@ -18,7 +18,7 @@ def cart_add(request, product_id):
     cart.add(product, quantity, variant)
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         return JsonResponse({"count": len(cart), 'subtotal': str(cart.subtotal)})
-    return redirect("cart_detail")
+    return redirect("store:cart_detail")
 
 def cart_detail(request):
     cart = Cart(request)
@@ -27,4 +27,4 @@ def cart_detail(request):
 @require_POST
 def cart_remove(request, item_key):
     Cart(request).remove(item_key)
-    return redirect ("cart_detail")
+    return redirect ("store:cart_detail")

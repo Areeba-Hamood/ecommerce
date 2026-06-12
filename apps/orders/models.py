@@ -60,5 +60,17 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=1)
     total = models.DecimalField(max_digits=10, decimal_places=2)
 
+class PaymentMethodConfig(models.Model):
+    code = models.CharField(max_length=50, unique=True, help_text="e.g.jazzcash, easypaisa, cod")
+    name = models.CharField(max_length=50,help_text="Display Name for the Customer")
+    is_active = models.BooleanField(default=True)
+    merchant_id = models.CharField(max_length=255, blank=True, null=True, help_text="Merchant ID for API intergrtion")
+    api_key = models.CharField(max_length=255, blank=True, null=True, help_text="API/Secret Key for integration")
+    sandbox_mode = modles.BooleanField(default=True, help_text="Run API callsin sandbox/testing mode")
+    instruction = models.TextField(blank=True, null=True, help_text="Instruction shown to the user on checkout")
+
+    def__str__(self):
+        return self.name
+
 
 
