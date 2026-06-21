@@ -34,3 +34,10 @@ class ProductVariant(models.Model):
     slug = models.CharField(max_length=50)
     stock_quantity = models.IntegerField(default=0)
 
+class Whishlist(model.Models):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="whishlist")
+    products = models.ManyToManyField(Product, related_name="whishlists", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def__str__(self):
+        return f"Whishlist of {self.user.username}"
