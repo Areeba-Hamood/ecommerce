@@ -18,7 +18,7 @@ class CustomUserRegistrationForm(UserCreationForm):
     last_name = forms.CharField(max_length=30, required=True)
 
     class Meta(UserCreationForm.Meta):
-        model = CustomUser
+        model = User
         fields = UserCreationForm.Meta.fields + ('email', 'first_name', 'last_name')
 
 class RegisterForm(UserCreationForm):
