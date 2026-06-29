@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 class Category(models.Model):
@@ -34,10 +35,10 @@ class ProductVariant(models.Model):
     slug = models.CharField(max_length=50)
     stock_quantity = models.IntegerField(default=0)
 
-class Whishlist(model.Models):
+class Whishlist(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="whishlist")
-    products = models.ManyToManyField(Product, related_name="whishlists", blank=True)
+    products = models.ManyToManyField(products, related_name="whishlists", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def__str__(self):
+    def __str__(self):
         return f"Whishlist of {self.user.username}"

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Cart - Crystal Elegance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .cart-container {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .cart-img {
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .btn-custom {
+            background-color: #c8a96a; /* golden */
+            color: #000;
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #b8965a;
+        }
+
+        .total-box {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .remove-btn {
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+
+    <h2 class="mb-4 text-center">🛒 Your Shopping Cart</h2>
+
+    <div class="row">
+        <!-- Cart Items -->
+        <div class="col-lg-8">
+
+            <div class="cart-container mb-3 d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="images/ring.jpg" class="cart-img">
+                    <div>
+                        <h5>Elegant Ring</h5>
+                        <p class="mb-1">Rs. 500</p>
+                        <input type="number" value="1" min="1" class="form-control w-50">
+                    </div>
+                </div>
+                <span class="remove-btn">Remove</span>
+            </div>
+
+            <div class="cart-container mb-3 d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="images/earring.jpg" class="cart-img">
+                    <div>
+                        <h5>Stylish Earrings</h5>
+                        <p class="mb-1">Rs. 300</p>
+                        <input type="number" value="2" min="1" class="form-control w-50">
+                    </div>
+                </div>
+                <span class="remove-btn">Remove</span>
+            </div>
+
+        </div>
+
+        <!-- Total Section -->
+        <div class="col-lg-4">
+            <div class="total-box">
+                <h4>Order Summary</h4>
+                <hr>
+
+                <p>Subtotal: <span class="float-end">Rs. 1100</span></p>
+                <p>Shipping: <span class="float-end">Rs. 100</span></p>
+
+                <hr>
+                <h5>Total: <span class="float-end">Rs. 1200</span></h5>
+
+               <a href="dynamic whatsapp checkout.html" class="btn btn-custom w-100 mt-3">Checkout</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
