@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}Review Order | Crystal Elegance{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+
+      <!-- Progress Steps -->
+      <div class="d-flex align-items-center justify-content-center gap-2 mb-5">
+        <div class="d-flex align-items-center gap-2">
+          <div style="width:32px; height:32px; border-radius:50%;
+                      background:var(--green); color:white;
+                      display:grid; place-items:center;">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          <span style="font-size:.85rem; color:var(--green);">Address</span>
+        </div>
+        <div style="flex:1; height:2px; background:var(--brown); max-width:80px;"></div>
+        <div class="d-flex align-items-center gap-2">
+          <div style="width:32px; height:32px; border-radius:50%;
+                      background:var(--green); color:white;
+                      display:grid; place-items:center;">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          <span style="font-size:.85rem; color:var(--green);">Payment</span>
+        </div>
+        <div style="flex:1; height:2px; background:var(--brown); max-width:80px;"></div>
+        <div class="d-flex align-items-center gap-2">
+          <div style="width:32px; height:32px; border-radius:50%;
+                      background:var(--brown); color:white;
+                      display:grid; place-items:center; font-size:.85rem; font-weight:600;">
+            3
+          </div>
+          <span style="font-size:.85rem; font-weight:600; color:var(--brown);">Review</span>
+        </div>
+      </div>
+
+      <div class="row g-4">
+
+        <!-- Left: Order Items + Address + Payment -->
+        <div class="col-12 col-lg-8">
+
+          <!-- Order Items -->
+          <div class="bg-white rounded-4 shadow-sm p-4 mb-4">
+            <h5 style="font-family:'Cormorant Garamond',serif;
+                       color:var(--brown-dark); margin-bottom:1.2rem;">
+              <i class="bi bi-bag me-2" style="color:var(--brown);"></i>
+              Order Items
+            </h5>
+
+            {% for item in cart %}
+            <div class="d-flex align-items-center gap-3 py-3"
+                 style="border-bottom:1px solid var(--border);">
+              <!-- Image -->
+              <img src="{{ item.product.images.first.image.url }}"
+                   alt="{{ item.product.name }}"
+                   style="width:70px; height:70px; object-fit:cover; border-radius:10px;"/>
+              <!-- Info -->
+              <div class="flex-grow-1">
+                <p style="font-weight:600; color:var(--brown-dark); margin:0; font-size:.95rem;">
+                  {{ item.product.name }}
+                </p>
+                <p style="font-size:.82rem; color:var(--muted); margin:.2rem 0 0;">
+                  Qty: {{ item.quantity }}
+                </p>
+              </div>
+              <!-- Price -->
+              <p style="font-weight:600; color:var(--brown); margin:0; white-space:nowrap;">
+                Rs. {{ item.total }}
+              </p>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Delivery Address -->
+          <div class="bg-white rounded-4 shadow-sm p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 style="font-family:'Cormorant Garamond',serif;
+                         color:var(--brown-dark); margin:0;">
+                <i class="bi bi-geo-alt me-2" style="color:var(--brown);"></i>
+                Delivery Address
+              </h5>
+              <a href="{% url 'store:checkout_address' %}"
+                 style="font-size:.82rem; color:var(--brown); text-decoration:none;">
+                <i class="bi bi-pencil me-1"></i> Change
+              </a>
+            </div>
+            <p style="color:var(--text); margin:0; line-height:1.8;">
+              <strong>{{ address.first_name }} {{ address.last_name }}</strong><br/>
+              {{ address.address_line_1 }}<br/>
+              {% if address.address_line_2 %}{{ address.address_line_2 }}<br/>{% endif %}
+              {{ address.city }}, {{ address.country }}<br/>
+              <i class="bi bi-telephone me-1" style="color:var(--brown);"></i>
+              {{ address.phone_number }}
+            </p>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="bg-white rounded-4 shadow-sm p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 style="font-family:'Cormorant Garamond',serif;
+                         color:var(--brown-dark); margin:0;">
+                <i class="bi bi-credit-card me-2" style="color:var(--brown);"></i>
+                Payment Method
+              </h5>
+              <a href="{% url 'store:checkout_payment' %}"
+                 style="font-size:.82rem; color:var(--brown); text-decoration:none;">
+                <i class="bi bi-pencil me-1"></i> Change
+              </a>
+            </div>
+            <p style="color:var(--text); margin:0;">
+              <strong>{{ payment.name }}</strong>
+              {% if payment.mobile_number %}
+                <br/>
+                <span style="font-size:.85rem; color:var(--muted);">
+                  <i class="bi bi-phone me-1"></i>{{ payment.mobile_number }}
+                </span>
+              {% endif %}
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div class="col-12 col-lg-4">
+          <div class="bg-white rounded-4 shadow-sm p-4" style="position:sticky; top:100px;">
+            <h5 style="font-family:'Cormorant Garamond',serif;
+                       color:var(--brown-dark); margin-bottom:1.2rem;">
+              Order Summary
+            </h5>
+
+            <div class="d-flex justify-content-between mb-2">
+              <span style="color:var(--muted);">Subtotal</span>
+              <span style="font-weight:600; color:var(--text);">Rs. {{ cart.subtotal }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span style="color:var(--muted);">Shipping</span>
+              <span style="font-weight:600; color:var(--text);">Rs. {{ shipping_charges }}</span>
+            </div>
+            <hr style="border-color:var(--border);"/>
+            <div class="d-flex justify-content-between mb-4">
+              <span style="font-weight:700; color:var(--brown-dark); font-size:1rem;">Total</span>
+              <span style="font-weight:700; color:var(--brown); font-size:1.1rem;">
+                Rs. {{ total }}
+              </span>
+            </div>
+
+            <!-- Place Order -->
+            <form method="POST" action="{% url 'store:checkout' %}">
+              {% csrf_token %}
+              <button type="submit"
+                      style="width:100%; background:var(--brown); color:white;
+                             border:none; border-radius:10px; padding:.9rem;
+                             font-family:'Jost',sans-serif; font-size:.9rem;
+                             font-weight:600; letter-spacing:1.5px;
+                             text-transform:uppercase; cursor:pointer;
+                             transition:opacity .2s, transform .15s;">
+                <i class="bi bi-bag-check me-2"></i> Place Order
+              </button>
+            </form>
+
+            <p style="font-size:.75rem; color:var(--muted); text-align:center; margin-top:.8rem;">
+              <i class="bi bi-shield-check me-1" style="color:var(--green);"></i>
+              Safe & Secure Checkout
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

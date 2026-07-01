@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Placed | Crystal Elegance{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="bg-white rounded-4 shadow-sm p-4 p-md-5 text-center">
+
+        <!-- Success Icon -->
+        <div style="width:90px; height:90px; border-radius:50%;
+                    background:#edf7f2; border:2px solid #b8e0ca;
+                    display:grid; place-items:center;
+                    margin:0 auto 1.5rem; font-size:2.5rem; color:var(--green);">
+          <i class="bi bi-check-lg"></i>
+        </div>
+
+        <h2 style="font-family:'Cormorant Garamond',serif;
+                   color:var(--brown-dark); margin-bottom:.5rem;">
+          Order Placed!
+        </h2>
+        <p style="color:var(--muted); margin-bottom:2rem;">
+          Thank you for shopping with Crystal Elegance
+        </p>
+
+        <!-- Order Details -->
+        <div style="background:var(--bg); border-radius:12px;
+                    padding:1.2rem; margin-bottom:2rem; text-align:left;">
+          <div class="d-flex justify-content-between mb-2">
+            <span style="color:var(--muted); font-size:.85rem;">Order Number</span>
+            <span style="font-weight:600; color:var(--brown-dark); font-size:.85rem;">
+              {{ order.order_number }}
+            </span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span style="color:var(--muted); font-size:.85rem;">Total Amount</span>
+            <span style="font-weight:600; color:var(--brown); font-size:.85rem;">
+              Rs. {{ order.total }}
+            </span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span style="color:var(--muted); font-size:.85rem;">Payment</span>
+            <span style="font-weight:600; color:var(--brown-dark); font-size:.85rem;">
+              {{ order.payment_method|upper }}
+            </span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span style="color:var(--muted); font-size:.85rem;">Status</span>
+            <span style="font-weight:600; color:var(--green); font-size:.85rem;">
+              <i class="bi bi-circle-fill me-1" style="font-size:.5rem;"></i>
+              {{ order.status|capfirst }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex flex-column gap-2">
+          <a href="{% url 'store:home' %}"
+             style="background:var(--brown); color:white; text-decoration:none;
+                    border-radius:10px; padding:.85rem; font-family:'Jost',sans-serif;
+                    font-size:.88rem; font-weight:600; letter-spacing:1.5px;
+                    text-transform:uppercase; display:block; transition:opacity .2s;">
+            <i class="bi bi-gem me-2"></i> Continue Shopping
+          </a>
+          {% if request.user.is_authenticated %}
+          <a href="{% url 'orders:order_history' %}"
+             style="background:transparent; color:var(--brown); text-decoration:none;
+                    border:1.5px solid var(--brown-dim); border-radius:10px;
+                    padding:.8rem; font-family:'Jost',sans-serif;
+                    font-size:.85rem; font-weight:500; letter-spacing:1px;
+                    text-transform:uppercase; display:block; transition:opacity .2s;">
+            <i class="bi bi-bag me-2"></i> View My Orders
+          </a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

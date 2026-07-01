@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+
+{% block title %}Delivery Address | Crystal Elegance{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+
+      <!-- Progress Steps -->
+      <div class="d-flex align-items-center justify-content-center gap-2 mb-5">
+        <!-- Step 1 Active -->
+        <div class="d-flex align-items-center gap-2">
+          <div style="width:32px; height:32px; border-radius:50%;
+                      background:var(--brown); color:white;
+                      display:grid; place-items:center; font-size:.85rem; font-weight:600;">
+            1
+          </div>
+          <span style="font-size:.85rem; font-weight:600; color:var(--brown);">Address</span>
+        </div>
+        <!-- Line -->
+        <div style="flex:1; height:2px; background:var(--border); max-width:80px;"></div>
+        <!-- Step 2 -->
+        <div class="d-flex align-items-center gap-2">
+          <div style="width:32px; height:32px; border-radius:50%;
+                      background:var(--border); color:var(--muted);
+                      display:grid; place-items:center; font-size:.85rem; font-weight:600;">
+            2
+          </div>
+          <span style="font-size:.85rem; color:var(--muted);">Payment</span>
+        </div>
+        <!-- Line -->
+        <div style="flex:1; height:2px; background:var(--border); max-width:80px;"></div>
+        <!-- Step 3 -->
+        <div class="d-flex align-items-center gap-2">
+          <div style="width:32px; height:32px; border-radius:50%;
+                      background:var(--border); color:var(--muted);
+                      display:grid; place-items:center; font-size:.85rem; font-weight:600;">
+            3
+          </div>
+          <span style="font-size:.85rem; color:var(--muted);">Review</span>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="bg-white rounded-4 shadow-sm p-4 p-md-5">
+        <h4 style="font-family:'Cormorant Garamond',serif;
+                   color:var(--brown-dark); margin-bottom:1.5rem;">
+          <i class="bi bi-geo-alt me-2" style="color:var(--brown);"></i>
+          Delivery Address
+        </h4>
+
+        <form method="POST" action="{% url 'store:checkout_address' %}">
+          {% csrf_token %}
+
+          <!-- Saved Addresses (only if logged in and have addresses) -->
+          {% if addresses %}
+            <p style="font-size:.75rem; font-weight:600; color:var(--brown);
+                      letter-spacing:1.5px; text-transform:uppercase; margin-bottom:1rem;">
+              Your Saved Addresses
+            </p>
+            <div class="row g-3 mb-4">
+              {% for address in addresses %}
+              <div class="col-12 col-md-6">
+                <label style="cursor:pointer; display:block;">
+                  <input type="radio" name="saved_address" 
+                         value="{{ address.id }}"
+                         style="display:none;"
+                         class="saved-addr-radio"/>
+                  <div class="saved-addr-card p-3 rounded-3"
+                       style="border:2px solid var(--border); transition:border-color .2s;">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div>
+                        <p style="font-weight:600; color:var(--brown-dark); margin:0;">
+                          {{ address.first_name }} {{ address.last_name }}
+                        </p>
+                        <p style="font-size:.83rem; color:var(--muted); margin:.3rem 0 0;">
+                          {{ address.address_line_1 }}<br/>
+                          {% if address.address_line_2 %}{{ address.address_line_2 }}<br/>{% endif %}
+                          {{ address.city }}, Pakistan
+                        </p>
+                        <p style="font-size:.83rem; color:var(--muted); margin:.3rem 0 0;">
+                          <i class="bi bi-telephone me-1"></i>{{ address.phone_number }}
+                        </p>
+                      </div>
+                      <div class="check-icon" style="display:none; color:var(--brown);">
+                        <i class="bi bi-check-circle-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+              </div>
+              {% endfor %}
+            </div>
+
+            <div class="divider-or d-flex align-items-center gap-3 mb-4">
+              <div style="flex:1; height:1px; background:var(--border);"></div>
+              <span style="font-size:.75rem; color:var(--muted); 
+                           letter-spacing:1.5px; text-transform:uppercase;">
+                Or enter new address
+              </span>
+              <div style="flex:1; height:1px; background:var(--border);"></div>
+            </div>
+          {% endif %}
+
+          <!-- New Address Form -->
+          <p style="font-size:.75rem; font-weight:600; color:var(--brown);
+                    letter-spacing:1.5px; text-transform:uppercase; margin-bottom:1rem;">
+            {% if addresses %}New Address{% else %}Enter Address{% endif %}
+          </p>
+
+          <!-- First Name + Last Name -->
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label" style="font-size:.75rem; font-weight:600;
+                     color:var(--brown-dark); letter-spacing:1px; text-transform:uppercase;">
+                First Name
+              </label>
+              <input type="text" name="first_name" class="form-input"
+                     placeholder="Sara" required/>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" style="font-size:.75rem; font-weight:600;
+                     color:var(--brown-dark); letter-spacing:1px; text-transform:uppercase;">
+                Last Name
+              </label>
+              <input type="text" name="last_name" class="form-input"
+                     placeholder="Khan" required/>
+            </div>
+          </div>
+
+          <!-- Address Line 1 -->
+          <div class="mb-3">
+            <label class="form-label" style="font-size:.75rem; font-weight:600;
+                   color:var(--brown-dark); letter-spacing:1px; text-transform:uppercase;">
+              Address Line 1
+            </label>
+            <input type="text" name="address_line_1" class="form-input"
+                   placeholder="House No, Street No" required/>
+          </div>
+
+          <!-- Address Line 2 -->
+          <div class="mb-3">
+            <label class="form-label" style="font-size:.75rem; font-weight:600;
+                   color:var(--brown-dark); letter-spacing:1px; text-transform:uppercase;">
+              Address Line 2
+              <span style="color:var(--muted); font-weight:400;">(Optional)</span>
+            </label>
+            <input type="text" name="address_line_2" class="form-input"
+                   placeholder="Area, Landmark"/>
+          </div>
+
+          <!-- City + Phone -->
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label" style="font-size:.75rem; font-weight:600;
+                     color:var(--brown-dark); letter-spacing:1px; text-transform:uppercase;">
+                City
+              </label>
+              <input type="text" name="city" class="form-input"
+                     placeholder="Lahore" required/>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" style="font-size:.75rem; font-weight:600;
+                     color:var(--brown-dark); letter-spacing:1px; text-transform:uppercase;">
+                Phone Number
+              </label>
+              <input type="tel" name="phone" class="form-input"
+                     placeholder="03XX-XXXXXXX" required/>
+            </div>
+          </div>
+
+          <!-- Save Address (only if logged in) -->
+          {% if request.user.is_authenticated %}
+          <div class="d-flex align-items-center gap-2 mb-4">
+            <input type="checkbox" id="save_address" name="save_address"
+                   style="accent-color:var(--brown); width:16px; height:16px;"/>
+            <label for="save_address" 
+                   style="font-size:.85rem; color:var(--muted); cursor:pointer;">
+              Save this address for future orders
+            </label>
+          </div>
+          {% endif %}
+
+          <!-- Submit Button -->
+          <button type="submit"
+                  style="width:100%; background:var(--brown); color:white;
+                         border:none; border-radius:10px; padding:.85rem;
+                         font-family:'Jost',sans-serif; font-size:.9rem;
+                         font-weight:600; letter-spacing:1.5px;
+                         text-transform:uppercase; cursor:pointer;
+                         transition:opacity .2s, transform .15s;">
+            <i class="bi bi-arrow-right me-2"></i> Continue to Payment
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Saved address card select effect
+  document.querySelectorAll('.saved-addr-radio').forEach(radio => {
+    radio.addEventListener('change', function() {
+      // sab cards reset karo
+      document.querySelectorAll('.saved-addr-card').forEach(card => {
+        card.style.borderColor = 'var(--border)';
+        card.querySelector('.check-icon').style.display = 'none';
+      });
+      // selected card highlight karo
+      const card = this.closest('label').querySelector('.saved-addr-card');
+      card.style.borderColor = 'var(--brown)';
+      card.querySelector('.check-icon').style.display = 'block';
+    });
+  });
+</script>
+{% endblock %}

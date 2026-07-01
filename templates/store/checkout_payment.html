@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Method | Crystal Elegance{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+
+      <!-- Progress Steps -->
+      <div class="d-flex align-items-center justify-content-center gap-2 mb-5">
+        <!-- Step 1 Done -->
+        <div class="d-flex align-items-center gap-2">
+          <div style="width:32px; height:32px; border-radius:50%;
+                      background:var(--green); color:white;
+                      display:grid; place-items:center; font-size:.85rem;">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          <span style="font-size:.85rem; color:var(--green);">Address</span>
+        </div>
+        <div style="flex:1; height:2px; background:var(--brown); max-width:80px;"></div>
+        <!-- Step 2 Active -->
+        <div class="d-flex align-items-center gap-2">
+          <div style="width:32px; height:32px; border-radius:50%;
+                      background:var(--brown); color:white;
+                      display:grid; place-items:center; font-size:.85rem; font-weight:600;">
+            2
+          </div>
+          <span style="font-size:.85rem; font-weight:600; color:var(--brown);">Payment</span>
+        </div>
+        <div style="flex:1; height:2px; background:var(--border); max-width:80px;"></div>
+        <!-- Step 3 -->
+        <div class="d-flex align-items-center gap-2">
+          <div style="width:32px; height:32px; border-radius:50%;
+                      background:var(--border); color:var(--muted);
+                      display:grid; place-items:center; font-size:.85rem; font-weight:600;">
+            3
+          </div>
+          <span style="font-size:.85rem; color:var(--muted);">Review</span>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="bg-white rounded-4 shadow-sm p-4 p-md-5">
+        <h4 style="font-family:'Cormorant Garamond',serif;
+                   color:var(--brown-dark); margin-bottom:1.5rem;">
+          <i class="bi bi-credit-card me-2" style="color:var(--brown);"></i>
+          Payment Method
+        </h4>
+
+        <form method="POST" action="{% url 'store:checkout_payment' %}">
+          {% csrf_token %}
+
+          <!-- Payment Methods -->
+          <div class="d-flex flex-column gap-3 mb-4">
+            {% for method in payment_methods %}
+            <label style="cursor:pointer;">
+              <input type="radio" name="payment_method"
+                     value="{{ method.code }}"
+                     class="payment-radio"
+                     style="display:none;"
+                     {% if forloop.first %}checked{% endif %}/>
+              <div class="payment-card p-3 rounded-3"
+                   style="border:2px solid {% if forloop.first %}var(--brown){% else %}var(--border){% endif %};
+                          transition:border-color .2s;">
+                <div class="d-flex align-items-center gap-3">
+                  <!-- Icon -->
+                  <div style="width:44px; height:44px; border-radius:10px;
+                              background:var(--bg); display:grid; place-items:center;">
+                    {% if method.code == 'cod' %}
+                      <i class="bi bi-cash-coin" style="font-size:1.4rem; color:var(--brown);"></i>
+                    {% elif method.code == 'jazzcash' %}
+                      <i class="bi bi-phone" style="font-size:1.4rem; color:#ee3124;"></i>
+                    {% elif method.code == 'easypaisa' %}
+                      <i class="bi bi-phone" style="font-size:1.4rem; color:#00a94f;"></i>
+                    {% else %}
+                      <i class="bi bi-wallet2" style="font-size:1.4rem; color:var(--brown);"></i>
+                    {% endif %}
+                  </div>
+                  <!-- Name -->
+                  <div>
+                    <p style="font-weight:600; color:var(--brown-dark); margin:0;">
+                      {{ method.name }}
+                    </p>
+                    <p style="font-size:.78rem; color:var(--muted); margin:0;">
+                      {% if method.code == 'cod' %}
+                        Pay when your order arrives
+                      {% else %}
+                        Pay securely via mobile wallet
+                      {% endif %}
+                    </p>
+                  </div>
+                  <!-- Check Icon -->
+                  <div class="ms-auto check-icon" 
+                       style="color:var(--brown); {% if not forloop.first %}display:none;{% endif %}">
+                    <i class="bi bi-check-circle-fill fs-5"></i>
+                  </div>
+                </div>
+
+                <!-- Extra Fields for JazzCash/EasyPaisa -->
+                {% if method.code != 'cod' %}
+                <div class="wallet-fields mt-3" 
+                     style="display:{% if forloop.first %}block{% else %}none{% endif %};">
+                  <div class="mb-2">
+                    <label style="font-size:.72rem; font-weight:600;
+                           color:var(--brown-dark); letter-spacing:1px; text-transform:uppercase;">
+                      Mobile Number
+                    </label>
+                    <input type="tel" name="mobile_number" class="form-input mt-1"
+                           placeholder="03XX-XXXXXXX"/>
+                  </div>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <label style="font-size:.72rem; font-weight:600;
+                             color:var(--brown-dark); letter-spacing:1px; text-transform:uppercase;">
+                        Wallet PIN
+                      </label>
+                      <input type="password" name="wallet_pin" class="form-input mt-1"
+                             placeholder="Enter PIN" maxlength="6"/>
+                    </div>
+                    <div class="col-6">
+                      <label style="font-size:.72rem; font-weight:600;
+                             color:var(--brown-dark); letter-spacing:1px; text-transform:uppercase;">
+                        OTP
+                      </label>
+                      <input type="text" name="wallet_otp" class="form-input mt-1"
+                             placeholder="Enter OTP" maxlength="6"/>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+
+              </div>
+            </label>
+            {% endfor %}
+          </div>
+
+          <!-- Submit -->
+          <button type="submit"
+                  style="width:100%; background:var(--brown); color:white;
+                         border:none; border-radius:10px; padding:.85rem;
+                         font-family:'Jost',sans-serif; font-size:.9rem;
+                         font-weight:600; letter-spacing:1.5px;
+                         text-transform:uppercase; cursor:pointer;
+                         transition:opacity .2s, transform .15s;">
+            <i class="bi bi-arrow-right me-2"></i> Continue to Review
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.querySelectorAll('.payment-radio').forEach(radio => {
+    radio.addEventListener('change', function() {
+      // sab reset karo
+      document.querySelectorAll('.payment-card').forEach(card => {
+        card.style.borderColor = 'var(--border)';
+        card.querySelector('.check-icon').style.display = 'none';
+        const fields = card.querySelector('.wallet-fields');
+        if (fields) fields.style.display = 'none';
+      });
+      // selected highlight karo
+      const card = this.closest('label').querySelector('.payment-card');
+      card.style.borderColor = 'var(--brown)';
+      card.querySelector('.check-icon').style.display = 'block';
+      const fields = card.querySelector('.wallet-fields');
+      if (fields) fields.style.display = 'block';
+    });
+  });
+</script>
+{% endblock %}

@@ -30,15 +30,15 @@ def wishlist_view(request):
 
 @login_required
 def wishlist_toggle(request,product_id):
-    product = get_object_or_404(product, id=product_id, is_avaliable=True)
+    product = get_object_or_404(Products, id=product_id, is_active=True)
     wishlist, _= Wishlist.objects.get_or_create(user=request.user)
 
-    if wishlist.Products.filter(id=product_id).exists():
-        wishlist.Products.remove(product)
+    if wishlist.product.filter(id=product_id).exists():
+        wishlist.product.remove(product)
         added = False
         message = "Removed from your wishlist."
     else:
-        wishlist.Products.add(product)
+        wishlist.product.add(product)
         added = True
         message = "Added to your wishlist."
 
@@ -76,12 +76,12 @@ def checkout_address(request):
             }
         else:
             # custom address inputs
-            first_name = request.Post.get("first_name")
-            last_name = request.Post.get("last_name")
-            address_line_1 = request.Post.get("address_line_1")
-            address_line_2 = request.Post.get("address_line_2")
-            city = request.Post.get("city")
-            phone = request.Post.get("phone")
+            first_name = request.POST.get("first_name")
+            last_name = request.POST.get("last_name")
+            address_line_1 = request.POST.get("address_line_1")
+            address_line_2 = request.POST.get("address_line_2")
+            city = request.POST.get("city")
+            phone_number = request.POST.get("phone")
             save_address = request.POST.get("save_address")
 
             address_data = {
@@ -144,7 +144,7 @@ def checkout_payment(request):
             "code": selected_method.code,
             "name": selected_method.name,
             "mobile_number": mobile_number,
-            "transection_id": f"TXN-{random.randint(100000, 99999)}" if selected_method.code !="cod"
+            "transaction_id": f"TXN-{random.randint(100000, 999999)}" if selected_method.code !="cod"
         }
 
         return redirect("store:checkout")
@@ -171,7 +171,7 @@ def checkout(request):
         try:
             with transaction.atomic():
                 # generate unique order number
-                order_num = f"LUX-{timezone.now().strftime('%y%m%d')}-{random.radint(1000, 9999)}"
+                order_num = f"LUX-{timezone.now().strftime('%y%m%d')}-{random.randint(1000, 9999)}"
 
                 user = request.user if request.user.is_authenticated else None
                 
@@ -221,7 +221,7 @@ def checkout(request):
 
                 return redirect("store:checkout_success")
         except Exception as e:
-            messages.error(request, f"An error occur while placing your order: [str(e)]")
+            messages.error(request, f"An error occur while placing your order: {str(e)}")
             return redirect("store:checkout")
 
     return render(request, "store/checkout.html",{
